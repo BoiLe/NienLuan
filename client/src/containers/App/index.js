@@ -5,7 +5,8 @@ import usestyles from "./Styles";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "../../Theme";
 import Home from "../HomeContainer.js";
-
+import Login from "../LoginContainer.js";
+import Register from "../RegisterContainer.js";
 
 export default function App() {
   // const dispatch = useDispatch();
@@ -17,7 +18,8 @@ export default function App() {
             renders the first one that matches the current URL. */}
         <Routes>
           <Route path="/" element={<Home />}></Route>
-          
+          <Route path="/login" element={<Login />}></Route>
+          <Route path="/register" element={<Register />}></Route>
         </Routes>
       </Router>
     </ThemeProvider>

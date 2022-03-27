@@ -14,6 +14,7 @@ const middleware = [...getDefaultMiddleware({ thunk: false }), sagaMiddleware];
 const store = configureStore({
   reducer: {
     product: ProductReducer,
+    user: userReducer
     
   },
   middleware:[sagaMiddleware],

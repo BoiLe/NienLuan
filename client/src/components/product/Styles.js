@@ -3,7 +3,7 @@ import Color from "color";
 import { red } from "@mui/material/colors";
 export default makeStyles((theme) => ({
   container: {
-    height: "430px",
+    height: "720px",
     borderStyle: "solid",
     borderColor: theme.palette.primary,
     borderRadius: 16,

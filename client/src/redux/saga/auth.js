@@ -17,7 +17,7 @@ export function* logInWithCredentials({ payload: { email, password } }) {
     yield put(loginFailed(error));
   }
 }
-function* registerWithCredentials({ payload}) {
+function* registerWithCredentials({ payload }) {
   try {
     yield registerAPI(payload);
     yield put(registerSuccess(payload));
@@ -39,6 +39,10 @@ function* onRegisterSuccess() {
 }
 
 function* usersaga() {
-  yield all([call(onLogInStart), call(onRegisterStart),call(onRegisterSuccess)]);
+  yield all([
+    call(onLogInStart),
+    call(onRegisterStart),
+    call(onRegisterSuccess),
+  ]);
 }
 export default usersaga;

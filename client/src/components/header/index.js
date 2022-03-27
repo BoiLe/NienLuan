@@ -27,11 +27,9 @@ export default function Header(props) {
     setOpen(!open);
   };
   const handleChange = (e) => {
-    setsearchItem(e.target.value)
-    props.searchIte(searchItem);
-    
+    setsearchItem(e.target.value);
+    props.searchIte(e.target.value);
   };
-  console.log(searchItem);
 
   const classes = useStyles(theme);
   return (
@@ -109,7 +107,7 @@ export default function Header(props) {
               onChange={handleChange}
             />
           </Search>
-            
+
           <Box sx={{ flexGrow: 1 }} />
           <Box className={classes.boxicon} alignItems="center">
             <IconButton
