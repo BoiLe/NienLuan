@@ -14,6 +14,7 @@ export const GetProduct = async (req, res) => {
             count: Products.length,
             Products: Products.map((Product) => {
               return {
+                id: Product._id,
                 name: Product.name,
                 price: Product.price,
                 brand: Product.brand,
@@ -37,6 +38,7 @@ export const GetProduct = async (req, res) => {
         count: Products.length,
         Products: Products.map((Product) => {
           return {
+            id: Product._id,
             name: Product.name,
             price: Product.price,
             brand: Product.brand,

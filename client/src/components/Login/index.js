@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import {
   Avatar,
@@ -10,21 +10,27 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-
-export default function Login(props) {
+import { login } from "../../redux/reducers/auth";
+import { useDispatch, useSelector } from "react-redux";
+import { motion } from "framer-motion";
+import { pageStyle, pageTransition, pageVariants } from "./Styles";
+export default function Login() {
   const paperStyle = {
     padding: 20,
     height: "73vh",
     width: 300,
     margin: "0 auto",
   };
-
   const avatarStyle = { backgroundColor: "#1bbd7e" };
   const btnstyle = { margin: "8px 0" };
-  const [data, setData] = useState("");
+  const [data, setData] = useState({ emai: "", password: "" });
+  const userLogin = useSelector((state) => state.user.login.successful);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -32,6 +38,7 @@ export default function Login(props) {
     },
     validationSchema: Yup.object({
       email: Yup.string()
+        .email("Invalid email address")
         .required("Required")
         .matches(
           /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
@@ -39,76 +46,102 @@ export default function Login(props) {
         ),
       password: Yup.string()
         .required("Required")
-
         .matches(
           /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d][A-Za-z\d!@#$%^&*()_+]{7,19}$/,
           "Password must be 7-19 characters and contain at least one letter, one number and a special character"
         ),
     }),
-    onSubmit: (value) => {
-      setData(value)
-      props.login(value)
+    onSubmit: (values, props) => {
+      dispatch(login(values));
+      setTimeout(() => {
+        props.resetForm();
+        props.setSubmitting(false);
+      }, 2000);
     },
   });
+  useEffect(() => {
+    if (userLogin) {
+      navigate("/");
+    }
+  }, [userLogin]);
 
   return (
+      <motion.div
+        style={pageStyle}
+        initial="initial"
+        animate="in"
+        exit="out"
+        variants={pageVariants}
+        transition={pageTransition}
+      >
     <Grid>
-      <Paper style={paperStyle}>
-        <Grid align="center">
-          <Avatar style={avatarStyle}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <h2>Sign In</h2>
-        </Grid>
-        <form onSubmit={formik.handleSubmit}>
-          <TextField
-            className={btnstyle}
-            fullWidth
-            label="Email"
-            name="email"
-            autoFocus
-            onBlur={formik.handleBlur}
-            value={formik.values.email}
-            onChange={formik.handleChange}
-            placeholder="Enter your email"
-          />
-          {formik.errors.email && (
-            <p className="errorMsg"> {formik.errors.email} </p>
-          )}
+        <Paper style={paperStyle}>
+          <Grid align="center">
+            <Avatar style={avatarStyle}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <h2>Sign In</h2>
+          </Grid>
+          <form onSubmit={formik.handleSubmit}>
+            <TextField
+              className={btnstyle}
+              fullWidth
+              label="Email"
+              name="email"
+              autoFocus
+              onBlur={formik.handleBlur}
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              placeholder="Enter your email"
+            />
+            {formik.errors.email && (
+              <Typography variant="secondary">
+                {" "}
+                {formik.errors.email}{" "}
+              </Typography>
+            )}
 
-          <TextField
-            fullWidth
-            className={btnstyle}
-            label="Password"
-            name="password"
-            type="password"
-            onBlur={formik.handleBlur}
-            value={formik.values.password}
-            onChange={formik.handleChange}
-            placeholder="Enter your password"
-          />
-          {formik.errors.password && (
-            <p className="errorMsg"> {formik.errors.password} </p>
-          )}
+            <TextField
+              fullWidth
+              className={btnstyle}
+              label="Password"
+              name="password"
+              type="password"
+              onBlur={formik.handleBlur}
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              placeholder="Enter your password"
+            />
+            {formik.errors.password && (
+              <Typography variant="primary">
+                {formik.errors.password}
+              </Typography>
+            )}
 
-          <Button
-            type="submit"
-            color="primary"
-            variant="contained"
-            style={btnstyle}
-            fullWidth
-            
+            <Button
+              type="submit"
+              color="primary"
+              variant="contained"
+              disabled={formik.isSubmitting}
+              style={btnstyle}
+              fullWidth
+            >
+              {formik.isSubmitting ? "Loading" : "Sign in"}
+            </Button>
+          </form>
+          <Typography>
+            <Link to="#">Forgot password ?</Link>
+          </Typography>
+          <Typography
+            variant="h4"
+            component={Link}
+            to="/register"
+            color="inherit"
           >
-            Sign in
-          </Button>
-        </form>
-        <Typography>
-          <Link to="#">Forgot password ?</Link>
-        </Typography>
-        <Typography>
-          Do you have an account ?<Link to="/register">Sign Up</Link>
-        </Typography>
-      </Paper>
+            Do you have an account ?
+          </Typography>
+        </Paper>
     </Grid>
+      </motion.div>
   );
 }

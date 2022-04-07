@@ -3,28 +3,51 @@ import { createSlice } from "@reduxjs/toolkit";
 export const userSlice = createSlice({
   name: "user",
   initialState: {
-    token: null,
-    isLogging: false,
-    error: null,
+    login: {
+      currentuser: null,
+      requesting: false,
+      successful: false,
+      messages: [],
+      error: null,
+    },
+    register: {
+      currentuser: null,
+      requesting: false,
+      successful: false,
+      messages: [],
+      error: null,
+    },
   },
   reducers: {
     login: (state, action) => {
-      state.isLogging = true;
+      state.login.requesting = true;
+      state.login.messages = [{ body: "Logging in...", time: new Date() }];
     },
     loginSuccess: (state, action) => {
-      state.isLogging = false;
-      state.token = action.payload;
+      state.login.requesting = false;
+      state.login.successful = true;
+      state.login.currentuser = action.payload;
     },
     loginFailed: (state, action) => {
-      state.isLogging = false;
-      state.error = action.payload;
+      state.login.requesting = false;
+      state.login.error = action.payload;
+      state.login.messages = [];
+    },
+    register: (state, action) => {
+      state.register.requesting = true;
+    },
+    registerSuccess: (state, action) => {
+      state.register.requesting = false;
+      state.register.successful = true;
     },
     registerFailed: (state, action) => {
-      state.error = action.payload;
+      state.register.requesting = false;
+      state.register.messages = [{ body: "Logging in...", time: new Date() }];
+      state.register.successful = false;
     },
     logout: (state) => {
-      state.isLogging = false;
-      state.token = null;
+      state.login.successful = false;
+      state.login.currentuser = null;
     },
   },
 });
@@ -36,7 +59,7 @@ export const {
   register,
   registerSuccess,
   registerFailed,
+  
 } = userSlice.actions;
-export const selectIsLoggedIn = (state) => state.user.isLoggedIn;
-export const selectIsLogging = (state) => state.user.isLogging;
+
 export default userSlice.reducer;

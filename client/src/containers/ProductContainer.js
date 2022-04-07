@@ -7,8 +7,8 @@ import Product from "../components/product";
 import Pagina from "../components/pagination";
 export default function ProductContainer({ search }) {
   const dispatch = useDispatch();
-  const products = useSelector((state) => state.product.data);
-
+  const products = useSelector((state) => state.product.allPosts.data);
+  
   React.useEffect(() => {
     dispatch(getProductRequest());
   }, [dispatch]);

@@ -7,11 +7,9 @@ export default makeStyles((theme) => ({
     borderStyle: "solid",
     borderColor: theme.palette.primary,
     borderRadius: 16,
-    
   },
   actionArea: {
     borderRadius: 16,
-    
   },
   card: ({ color }) => ({
     width: 220,
@@ -43,5 +41,32 @@ export default makeStyles((theme) => ({
     marginTop: "2rem",
     fontWeight: 500,
     fontSize: 14,
+  },
+  paper: {
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    position: "absolute",
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
+  form: {
+    display: "flex",
+    flexDirection: "column",
+  },
+  header: {
+    margin: "0 0 10px 0",
+  },
+  title: {
+    marginBottom: "10px",
+  },
+  textarea: {
+    padding: "10px",
+    marginBottom: "10px",
+  },
+  footer: {
+    marginTop: "10px",
   },
 }));

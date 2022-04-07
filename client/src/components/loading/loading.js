@@ -1,9 +1,20 @@
-import React, { Component } from 'react'
+import { Typography } from "@mui/material";
+import * as React from "react";
+import LoadGift from "./load.gif";
 
-const Loading = () => (
-    <div className="spinner">
-        <div className="double-bounce1"></div>
-        <div className="double-bounce2"></div>
+export default function Loading() {
+  const paperStyle = {
+    display: "flex",
+    flexDirection: "column",
+    height: "30vh",
+    width: "30vh",
+    margin: "0 auto",
+    backgroundColor: "#1bbd7e",
+  };
+  return (
+    <div style={paperStyle}>
+      <img src={LoadGift}></img>
+     
     </div>
-)
-export default Loading
+  );
+}

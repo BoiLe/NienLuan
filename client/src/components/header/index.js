@@ -15,22 +15,26 @@ import SearchIcon from "@mui/icons-material/Search";
 import StarBorder from "@mui/icons-material/StarBorder";
 import IconButton from "@mui/material/IconButton";
 import AccountCircle from "@mui/icons-material/AccountCircle";
+import LogoutIcon from '@mui/icons-material/Logout';
 import ShoppingCart from "@mui/icons-material/ShoppingCart";
 import useStyles from "./Styles";
 import theme from "../../Theme";
 import { Search, SearchIconWrapper, StyledInputBase } from "../Search";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../redux/reducers/auth";
 
 export default function Header(props) {
   const [open, setOpen] = React.useState(true);
   const [searchItem, setsearchItem] = React.useState("");
+  const user = useSelector((state) => state.user.login.currentuser)
   const handleClick = () => {
-    setOpen(!open);
+    setOpen(!open)
   };
   const handleChange = (e) => {
     setsearchItem(e.target.value);
     props.searchIte(e.target.value);
   };
-
+  const dispatch = useDispatch();
   const classes = useStyles(theme);
   return (
     <Box>
@@ -123,17 +127,33 @@ export default function Header(props) {
               </Badge>
             </IconButton>
 
-            <IconButton
-              component={Link}
-              to="/login"
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-haspopup="true"
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
+            {user ? (
+              <IconButton
+                component={Link}
+                to="/logout"
+                size="large"
+                edge="end"
+                aria-label="account of current user"
+                aria-haspopup="true"
+                color="inherit"
+                onClick={() => dispatch(logout())}
+              >
+                <LogoutIcon />
+              </IconButton>
+            ) : (
+              <IconButton
+                component={Link}
+                to="/login"
+                size="large"
+                edge="end"
+                aria-label="account of current user"
+                aria-haspopup="true"
+                color="inherit"
+                
+              >
+                <AccountCircle />
+              </IconButton>
+            )}
           </Box>
         </Toolbar>
       </AppBar>
